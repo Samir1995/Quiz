@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Quiz</string>
+    <string name="start_quiz">Start Quiz</string>
+    <string name="hoogste_score_0">Hoogste Score: 0</string>
+    <string name="de_enige_echte_quiz">De enige echte quiz</string>
+    <string name="score_0">Score: 0</string>
+    <string name="question_1_x">Vraag: 1/x</string>
+    <string name="here_will_be_the_question_text_nhere_will_be_the_question_text_nhere_will_be_the_question_text">Here will be the question text Here will be the question text Here will be the question text</string>
+    <string name="_00_30">00:30</string>
+    <string name="confirm">Bevestig Antwoord</string>
+    <string name="option_1">Optie 1</string>
+    <string name="option_2">Optie 2</string>
+    <string name="option_3">Optie 3</string>
+    <string name="instellingen">Instellingen</string>
+    <string name="text_instelling">TextView</string>
+    <string name="difficulty">Moeilijkheidsgraad:</string>
+    <string name="categorie">Categorie:</string>
+    <string name="vul_nieuwe_vraag_in">Vul nieuwe vraag in</string>
+    <string name="button_add">Toevoegen</string>
+    <string name="verwijder_vragen">Vragen verwijderen</string>
+    <string name="verwijder_vraag_door_te_swipen">Verwijder vragen door ze te swipen naar links of rechts</string>
+    <string name="vraag_toevoegen">Vraag toevoegen</string>
+    <string name="vul_3_opties_in">Vul 3 opties in</string>
+    <string name="vul_optienummer_van_juiste_antwoord_in">Vul optienummer van juiste antwoord in</string>
+    <string name="empty_item">Empty Item</string>
+    <string name="vragen_verwijderen">Vragen verwijderen</string>
+    <string name="nieuwe_vragen_toevoegen">Nieuwe vragen toevoegen</string>
+    <string name="del">Verwijderen</string>
+    <string name="_3">3</string>
+    <string name="_2">2</string>
+    <string name="_1">1</string>
+    <string name="kies_hieronder_de_moeilijkheidsgraad_en_catogorie">Kies hieronder de Moeilijkheidsgraad en Catogorie</string>
+    <string name="voeg_vraag_toe">Voeg vraag toe </string>
+</resources>
