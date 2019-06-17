@@ -172,7 +172,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/button_del"
+        app:layout_constraintBottom_toTopOf="@+id/button_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
@@ -180,7 +180,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
-        android:id="@+id/spinner_difficulty"
+        android:id="@+id/spinner_moeilijkheid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/text_titel_instelling"
@@ -190,14 +190,14 @@
         android:layout_marginBottom="8dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spinner_category"
+        app:layout_constraintEnd_toStartOf="@+id/spinner_categorie"
         app:layout_constraintHorizontal_bias="0.275"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittext_nr"
         app:layout_constraintVertical_bias="0.253" />
 
     <Spinner
-        android:id="@+id/spinner_category"
+        android:id="@+id/spinner_categorie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/text_titel_instelling"
@@ -207,12 +207,12 @@
         android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinner_difficulty"
+        app:layout_constraintStart_toEndOf="@+id/spinner_moeilijkheid"
         app:layout_constraintTop_toBottomOf="@+id/edittext_nr"
         app:layout_constraintVertical_bias="0.253" />
 
     <Button
-        android:id="@+id/button_del"
+        android:id="@+id/button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

@@ -22,17 +22,17 @@ public class Quiz extends AppCompatActivity {
     public static final String EXTRA_SCORE = "extraScore";
     private static final long COUNTDOWN_IN_MILLIS = 30000;
 
-    private TextView textViewQuestion;
+    private TextView textViewVraag;
     private TextView textViewScore;
-    private TextView textViewQuestionCount;
+    private TextView textViewVraagCount;
     private TextView textViewCountDown;
-    private RadioGroup rbGroup;
+    private RadioGroup rbGroep;
     private RadioButton rb1;
     private RadioButton rb2;
     private RadioButton rb3;
-    private Button buttonConfirmNext;
-    private TextView textViewDifficulty;
-    private TextView textViewCategory;
+    private Button btnBevestigNext;
+    private TextView textViewMoeilijkheid;
+    private TextView textViewCategorie;
 
     private ColorStateList textColorDefaultRb;
     private ColorStateList textColorDefaultCd;
@@ -40,16 +40,16 @@ public class Quiz extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private long timeLeftInMillis;
 
-    private List<Vragen> questionList;
+    private List<Vragen> vraagList;
 
-    private int questionCounter;
-    private int questionCountTotal;
-    private Vragen currentQuestion;
+    private int vraagCounter;
+    private int vraagCountTotal;
+    private Vragen huidigVraag;
 
     private int score;
-    private boolean answered;
+    private boolean antwoord;
 
-    private long backPressedTime;
+    private long backButtonTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,48 +58,48 @@ public class Quiz extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        textViewQuestion = findViewById(R.id.text_view_question);
+        textViewVraag = findViewById(R.id.text_view_vraag);
         textViewScore = findViewById(R.id.text_view_score);
-        textViewQuestionCount = findViewById(R.id.text_view_question_count);
+        textViewVraagCount = findViewById(R.id.text_view_vraag_count);
         textViewCountDown = findViewById(R.id.text_view_countdown);
-        rbGroup = findViewById(R.id.radio_group);
+        rbGroep = findViewById(R.id.radio_groep);
         rb1 = findViewById(R.id.radio_button1);
         rb2 = findViewById(R.id.radio_button2);
         rb3 = findViewById(R.id.radio_button3);
-        buttonConfirmNext = findViewById(R.id.button_confirm_next);
-        textViewDifficulty = findViewById(R.id.text_view_difficulty);
-        textViewCategory = findViewById(R.id.text_view_category);
+        btnBevestigNext = findViewById(R.id.button_bevestig_next);
+        textViewMoeilijkheid = findViewById(R.id.text_view_moeilijkheid);
+        textViewCategorie = findViewById(R.id.text_view_categorie);
 
         textColorDefaultRb = rb1.getTextColors();
         textColorDefaultCd = textViewCountDown.getTextColors();
 
         Intent intent = getIntent();
-        int categoryID = intent.getIntExtra(MainActivity.EXTRA_CATEGORY_ID, 0);
+        int categorieID = intent.getIntExtra(MainActivity.EXTRA_CATEGORY_ID, 0);
         String categoryName = intent.getStringExtra(MainActivity.EXTRA_CATEGORY_NAME);
-        String difficulty = intent.getStringExtra(MainActivity.EXTRA_DIFFICULTY);
+        String moeilijkheid = intent.getStringExtra(MainActivity.EXTRA_DIFFICULTY);
 
-        textViewCategory.setText("Categorie: " + categoryName);
-        textViewDifficulty.setText("Moeilijkheidsgraad: " + difficulty);
+        textViewCategorie.setText("Categorie: " + categoryName);
+        textViewMoeilijkheid.setText("Moeilijkheidsgraad: " + moeilijkheid);
 
         DbHelper dbHelper = DbHelper.getInstance(this);
-        questionList = dbHelper.getAllQuestions();
-        questionList = dbHelper.getQuestions(categoryID, difficulty);
-        questionCountTotal = questionList.size();
-        Collections.shuffle(questionList);
+        vraagList = dbHelper.getAllVragen();
+        vraagList = dbHelper.getVraag(categorieID, moeilijkheid);
+        vraagCountTotal = vraagList.size();
+        Collections.shuffle(vraagList);
 
-        showNextQuestion();
+        showNextVraag();
 
-        buttonConfirmNext.setOnClickListener(new View.OnClickListener() {
+        btnBevestigNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!answered) {
+                if (!antwoord) {
                     if (rb1.isChecked() || rb2.isChecked() || rb3.isChecked()) {
-                        checkAnswer();
+                        checkAntwoord();
                     } else {
                         Toast.makeText(Quiz.this, "Selecteer een Antwoord", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    showNextQuestion();
+                    showNextVraag();
                 }
             }
         });
@@ -115,24 +115,26 @@ public class Quiz extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private void showNextQuestion() {
+
+    // Gets next answer and shows it
+    private void showNextVraag() {
         rb1.setTextColor(textColorDefaultRb);
         rb2.setTextColor(textColorDefaultRb);
         rb3.setTextColor(textColorDefaultRb);
-        rbGroup.clearCheck();
+        rbGroep.clearCheck();
 
-        if (questionCounter < questionCountTotal) {
-            currentQuestion = questionList.get(questionCounter);
+        if (vraagCounter < vraagCountTotal) {
+            huidigVraag = vraagList.get(vraagCounter);
 
-            textViewQuestion.setText(currentQuestion.getQuestion());
-            rb1.setText(currentQuestion.getOption1());
-            rb2.setText(currentQuestion.getOption2());
-            rb3.setText(currentQuestion.getOption3());
+            textViewVraag.setText(huidigVraag.getVraag());
+            rb1.setText(huidigVraag.getOptie1());
+            rb2.setText(huidigVraag.getOptie2());
+            rb3.setText(huidigVraag.getOptie3());
 
-            questionCounter++;
-            textViewQuestionCount.setText("Vraag: " + questionCounter + "/" + questionCountTotal);
-            answered = false;
-            buttonConfirmNext.setText("Bevestig");
+            vraagCounter++;
+            textViewVraagCount.setText("Vraag: " + vraagCounter + "/" + vraagCountTotal);
+            antwoord = false;
+            btnBevestigNext.setText("Bevestig");
 
             timeLeftInMillis = COUNTDOWN_IN_MILLIS;
             startCountDown();
@@ -153,7 +155,7 @@ public class Quiz extends AppCompatActivity {
             public void onFinish() {
                 timeLeftInMillis = 0;
                 updateCountDownText();
-                checkAnswer();
+                checkAntwoord();
             }
         }.start();
     }
@@ -173,50 +175,54 @@ public class Quiz extends AppCompatActivity {
         }
     }
 
-    private void checkAnswer() {
-        answered = true;
+    //Check if answer is correct and change score
+    private void checkAntwoord() {
+        antwoord = true;
 
         countDownTimer.cancel();
 
-        RadioButton rbSelected = findViewById(rbGroup.getCheckedRadioButtonId());
-        int answerNr = rbGroup.indexOfChild(rbSelected) + 1;
+        RadioButton rbSelected = findViewById(rbGroep.getCheckedRadioButtonId());
+        int answerNr = rbGroep.indexOfChild(rbSelected) + 1;
 
-        if (answerNr == currentQuestion.getAnswerNr()) {
+        if (answerNr == huidigVraag.getAntwoordNr()) {
             score++;
             textViewScore.setText("Score: " + score);
         }
 
-        showSolution();
+        showAntwoord();
     }
 
-    private void showSolution() {
+    //Shows correct answer
+    private void showAntwoord() {
         rb1.setTextColor(Color.RED);
         rb2.setTextColor(Color.RED);
         rb3.setTextColor(Color.RED);
 
-        switch (currentQuestion.getAnswerNr()) {
+        switch (huidigVraag.getAntwoordNr()) {
             case 1:
                 rb1.setTextColor(Color.GREEN);
-                textViewQuestion.setText("Antwoord 1 is correct");
+                textViewVraag.setText("Antwoord 1 is correct");
                 break;
             case 2:
                 rb2.setTextColor(Color.GREEN);
-                textViewQuestion.setText("Antwoord 2 is correct");
+                textViewVraag.setText("Antwoord 2 is correct");
                 break;
             case 3:
                 rb3.setTextColor(Color.GREEN);
-                textViewQuestion.setText("Antwoord 3 is correct");
+                textViewVraag.setText("Antwoord 3 is correct");
                 break;
         }
 
-        if (questionCounter < questionCountTotal) {
-            buttonConfirmNext.setText(" Volgende ");
+        if (vraagCounter < vraagCountTotal) {
+            btnBevestigNext.setText(" Volgende vraag ");
         } else {
-            buttonConfirmNext.setText(" Quiz Afronden ");
+            btnBevestigNext.setText(" Quiz Afronden ");
         }
     }
 
+    //Stops quiz
     private void finishQuiz() {
+        //passes score to MainActivity
         Intent resultIntent = new Intent();
         resultIntent.putExtra(EXTRA_SCORE, score);
         setResult(RESULT_OK, resultIntent);
@@ -225,13 +231,13 @@ public class Quiz extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+        if (backButtonTime + 2000 > System.currentTimeMillis()) {
             finishQuiz();
         } else {
             Toast.makeText(this, "Klik nog een keer om de quiz te beëindigen", Toast.LENGTH_SHORT).show();
         }
 
-        backPressedTime = System.currentTimeMillis();
+        backButtonTime = System.currentTimeMillis();
     }
 
     @Override

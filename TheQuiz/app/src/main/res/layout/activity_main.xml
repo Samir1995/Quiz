@@ -21,14 +21,14 @@
         android:text="@string/de_enige_echte_quiz"
         android:textColor="@android:color/white"
         android:textSize="35sp"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_highscore"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_hoogste_score"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.113" />
 
     <TextView
-        android:id="@+id/text_view_highscore"
+        android:id="@+id/text_view_hoogste_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
@@ -62,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_highscore"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_hoogste_score"
         app:layout_constraintVertical_bias="0.164" />
 
     <Button
@@ -85,7 +85,7 @@
         app:layout_constraintVertical_bias="0.156" />
 
     <Spinner
-        android:id="@+id/spinner_difficulty"
+        android:id="@+id/spinner_moeilijkheid"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
         android:layout_below="@+id/button_instelling_quiz"
@@ -103,7 +103,7 @@
         app:layout_constraintVertical_bias="0.68" />
 
     <Spinner
-        android:id="@+id/spinner_category"
+        android:id="@+id/spinner_categorie"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
         android:layout_alignStart="@+id/text_titel_instelling"
@@ -115,7 +115,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toEndOf="@+id/spinner_difficulty"
+        app:layout_constraintStart_toEndOf="@+id/spinner_moeilijkheid"
         app:layout_constraintTop_toBottomOf="@+id/button_instelling_quiz"
         app:layout_constraintVertical_bias="0.676" />
 

@@ -6,19 +6,19 @@ public final class QuizContract {
 
     private QuizContract(){}
 
-    public static class CategoriesTable implements BaseColumns {
+    public static class CategorieTabel implements BaseColumns {
         public static final String TABLE_NAME = "quiz_categories";
-        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_NAME = "naam";
     }
 
-    public static class QuestionsTable implements BaseColumns {
-        public static final String TABLE_NAME = "quiz_questions";
-        public static final String COLUMN_QUESTION = "question";
-        public static final String COLUMN_OPTION1 = "option1";
-        public static final String COLUMN_OPTION2 = "option2";
-        public static final String COLUMN_OPTION3 = "option3";
-        public static final String COLUMN_ANSWER_NR = "answer_nr";
-        public static final String COLUMN_DIFFICULTY = "difficulty";
-        public static final String COLUMN_CATEGORY_ID = "category_id";
+    public static class VragenTabel implements BaseColumns {
+        public static final String TABLE_NAME = "quiz_vragen";
+        public static final String COLUMN_VRAAG = "vraag";
+        public static final String COLUMN_OPTIE1 = "optie1";
+        public static final String COLUMN_OPTIE2 = "optie2";
+        public static final String COLUMN_OPTIE3 = "optie3";
+        public static final String COLUMN_ANTW_NR = "antwoord_nr";
+        public static final String COLUMN_MOEILIJKHEID = "moeilijkheid";
+        public static final String COLUMN_CATEGORIE_ID = "categorie_id";
     }
 }

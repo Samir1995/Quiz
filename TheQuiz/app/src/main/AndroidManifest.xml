@@ -15,11 +15,16 @@
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".MainActivity" />
 
-        <activity android:name=".DelVraag" />
-        <activity android:name=".AddVraag" />
-        <activity android:name=".Instelling" />
-        <activity android:name=".Quiz"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".DelVraag"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AddVraag"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Instelling"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Quiz"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

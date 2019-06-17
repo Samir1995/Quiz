@@ -42,8 +42,8 @@ public class VraagAdapter extends RecyclerView.Adapter<VraagAdapter.VraagViewHol
             return;
         }
 
-        String vraag = mCursor.getString(mCursor.getColumnIndex(QuizContract.QuestionsTable.COLUMN_QUESTION));
-        long id = mCursor.getLong(mCursor.getColumnIndex(QuizContract.QuestionsTable._ID));
+        String vraag = mCursor.getString(mCursor.getColumnIndex(QuizContract.VragenTabel.COLUMN_VRAAG));
+        long id = mCursor.getLong(mCursor.getColumnIndex(QuizContract.VragenTabel._ID));
 
 
         holder.vraagText.setText(vraag);

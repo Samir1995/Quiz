@@ -21,25 +21,25 @@ public class MainActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String KEY_HIGHSCORE = "keyHighscore";
 
-    private Spinner spinnerDifficulty;
-    private Spinner spinnerCategory;
+    private Spinner spinnerMoeilijkheid;
+    private Spinner spinnerCategorie;
 
-    private TextView textViewHighscore;
+    private TextView textViewHoogsteScore;
 
-    private int highscore;
+    private int hoogsteScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        spinnerDifficulty = findViewById(R.id.spinner_difficulty);
-        spinnerCategory = findViewById(R.id.spinner_category);
-        textViewHighscore = findViewById(R.id.text_view_highscore);
+        spinnerMoeilijkheid = findViewById(R.id.spinner_moeilijkheid);
+        spinnerCategorie = findViewById(R.id.spinner_categorie);
+        textViewHoogsteScore = findViewById(R.id.text_view_hoogste_score);
 
-        loadCategories();
-        loadDifficultyLevels();
-        loadHighscore();
+        laadCategorieen();
+        laadMoeilijkheden();
+        laadHoogsteScore();
 
         Button buttonStartQuiz = findViewById(R.id.button_start_quiz);
         buttonStartQuiz.setOnClickListener(new View.OnClickListener() {
@@ -58,16 +58,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Start quiz with right category and diff
     private void startQuiz() {
-        String difficulty = spinnerDifficulty.getSelectedItem().toString();
-        Categorie selectedCategory = (Categorie) spinnerCategory.getSelectedItem();
-        int categoryID = selectedCategory.getId();
-        String categoryName = selectedCategory.getName();
+        String moeilijkheid = spinnerMoeilijkheid.getSelectedItem().toString();
+        Categorie selectCategorie = (Categorie) spinnerCategorie.getSelectedItem();
+        int categorieID = selectCategorie.getId();
+        String categorieNaam = selectCategorie.getName();
 
         Intent intent = new Intent(MainActivity.this, Quiz.class);
-        intent.putExtra(EXTRA_DIFFICULTY, difficulty);
-        intent.putExtra(EXTRA_CATEGORY_ID, categoryID);
-        intent.putExtra(EXTRA_CATEGORY_NAME, categoryName);
+        intent.putExtra(EXTRA_DIFFICULTY, moeilijkheid);
+        intent.putExtra(EXTRA_CATEGORY_ID, categorieID);
+        intent.putExtra(EXTRA_CATEGORY_NAME, categorieNaam);
         startActivityForResult(intent, REQUEST_CODE_QUIZ);
     }
 
@@ -79,49 +80,53 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        //Gets score from end quiz
         if (requestCode == REQUEST_CODE_QUIZ) {
             if (resultCode == RESULT_OK) {
                 int score = data.getIntExtra(Quiz.EXTRA_SCORE, 0);
-                if (score > highscore) {
-                    updateHighscore(score);
+                if (score > hoogsteScore) {
+                    updateHoogsteScore(score);
                 }
             }
         }
     }
 
-    private void loadCategories() {
+    //Load categories into spinner
+    private void laadCategorieen() {
         DbHelper dbHelper = DbHelper.getInstance(this);
         List<Categorie> categories = dbHelper.getAllCategories();
 
         ArrayAdapter<Categorie> adapterCategories = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, categories);
         adapterCategories.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapterCategories);
+        spinnerCategorie.setAdapter(adapterCategories);
     }
 
-    private void loadDifficultyLevels() {
-        String[] difficultyLevels = Vragen.getAllDifficultyLevels();
+    //Load diff into spinner
+    private void laadMoeilijkheden() {
+        String[] Moeilijkheden = Vragen.getAllMoeilijkheden();
 
-        ArrayAdapter<String> adapterDifficulty = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, difficultyLevels);
-        adapterDifficulty.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDifficulty.setAdapter(adapterDifficulty);
+        ArrayAdapter<String> adapterMoeilijkheid = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, Moeilijkheden);
+        adapterMoeilijkheid.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMoeilijkheid.setAdapter(adapterMoeilijkheid);
     }
 
-    private void loadHighscore() {
+    //load highscore
+    private void laadHoogsteScore() {
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        highscore = prefs.getInt(KEY_HIGHSCORE, 0);
-        textViewHighscore.setText("Highscore: " + highscore);
+        hoogsteScore = prefs.getInt(KEY_HIGHSCORE, 0);
+        textViewHoogsteScore.setText("Hoogste score: " + hoogsteScore);
     }
 
-    private void updateHighscore(int highscoreNew) {
-        highscore = highscoreNew;
-        textViewHighscore.setText("Highscore: " + highscore);
+    //update highscore on mainactivity
+    private void updateHoogsteScore(int hoogsteScoreNew) {
+        hoogsteScore = hoogsteScoreNew;
+        textViewHoogsteScore.setText("Hoogste score: " + hoogsteScore);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(KEY_HIGHSCORE, highscore);
+        editor.putInt(KEY_HIGHSCORE, hoogsteScore);
         editor.apply();
     }
 }

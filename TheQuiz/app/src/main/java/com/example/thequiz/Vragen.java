@@ -1,30 +1,30 @@
 package com.example.thequiz;
 
 public class Vragen {
-    public static final String DIFFICULTY_EASY = "Makkelijk";
-    public static final String DIFFICULTY_MEDIUM = "Gemiddeld";
-    public static final String DIFFICULTY_HARD = "Moeilijk";
+    public static final String MOEILIJKHEID_MAK = "Makkelijk";
+    public static final String MOEILIJKHEID_GEM = "Gemiddeld";
+    public static final String MOEILIJKHEID_MOE = "Moeilijk";
 
     private int id;
-    private String question;
-    private String option1;
-    private String option2;
-    private String option3;
-    private int answerNr;
-    private String difficulty;
-    private int categoryID;
+    private String vraag;
+    private String optie1;
+    private String optie2;
+    private String optie3;
+    private int antwoordNr;
+    private String moeilijkheid;
+    private int categorieID;
 
     public Vragen() {
     }
 
-    public Vragen(String question, String option1, String option2, String option3, int answerNr, String difficulty, int categoryID) {
-        this.question = question;
-        this.option1 = option1;
-        this.option2 = option2;
-        this.option3 = option3;
-        this.answerNr = answerNr;
-        this.difficulty = difficulty;
-        this.categoryID = categoryID;
+    public Vragen(String vraag, String optie1, String optie2, String optie3, int antwoordNr, String moeilijkheid, int categorieID) {
+        this.vraag = vraag;
+        this.optie1 = optie1;
+        this.optie2 = optie2;
+        this.optie3 = optie3;
+        this.antwoordNr = antwoordNr;
+        this.moeilijkheid = moeilijkheid;
+        this.categorieID = categorieID;
     }
 
     public int getId() {
@@ -35,67 +35,67 @@ public class Vragen {
         this.id = id;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getVraag() {
+        return vraag;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setVraag(String vraag) {
+        this.vraag = vraag;
     }
 
-    public String getOption1() {
-        return option1;
+    public String getOptie1() {
+        return optie1;
     }
 
-    public void setOption1(String option1) {
-        this.option1 = option1;
+    public void setOptie1(String optie1) {
+        this.optie1 = optie1;
     }
 
-    public String getOption2() {
-        return option2;
+    public String getOptie2() {
+        return optie2;
     }
 
-    public void setOption2(String option2) {
-        this.option2 = option2;
+    public void setOptie2(String optie2) {
+        this.optie2 = optie2;
     }
 
-    public String getOption3() {
-        return option3;
+    public String getOptie3() {
+        return optie3;
     }
 
-    public void setOption3(String option3) {
-        this.option3 = option3;
+    public void setOptie3(String optie3) {
+        this.optie3 = optie3;
     }
 
-    public int getAnswerNr() {
-        return answerNr;
+    public int getAntwoordNr() {
+        return antwoordNr;
     }
 
-    public void setAnswerNr(int answerNr) {
-        this.answerNr = answerNr;
+    public void setAntwoordNr(int antwoordNr) {
+        this.antwoordNr = antwoordNr;
     }
 
-    public String getDifficulty() {
-        return difficulty;
+    public String getMoeilijkheid() {
+        return moeilijkheid;
     }
 
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
+    public void setMoeilijkheid(String moeilijkheid) {
+        this.moeilijkheid = moeilijkheid;
     }
 
-    public int getCategoryID() {
-        return categoryID;
+    public int getCategorieID() {
+        return categorieID;
     }
 
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
+    public void setCategorieID(int categorieID) {
+        this.categorieID = categorieID;
     }
 
-    public static String[] getAllDifficultyLevels() {
+    public static String[] getAllMoeilijkheden() {
         return new String[]{
-                DIFFICULTY_EASY,
-                DIFFICULTY_MEDIUM,
-                DIFFICULTY_HARD
+                MOEILIJKHEID_MAK,
+                MOEILIJKHEID_GEM,
+                MOEILIJKHEID_MOE
         };
     }
 }

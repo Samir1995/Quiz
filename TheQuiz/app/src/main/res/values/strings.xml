@@ -5,7 +5,7 @@
     <string name="de_enige_echte_quiz">De enige echte quiz</string>
     <string name="score_0">Score: 0</string>
     <string name="question_1_x">Vraag: 1/x</string>
-    <string name="here_will_be_the_question_text_nhere_will_be_the_question_text_nhere_will_be_the_question_text">Here will be the question text Here will be the question text Here will be the question text</string>
+    <string name="here_will_be_the_question_text_nhere_will_be_the_question_text_nhere_will_be_the_question_text">Here will be the vraag text Here will be the vraag text Here will be the vraag text</string>
     <string name="_00_30">00:30</string>
     <string name="confirm">Bevestig Antwoord</string>
     <string name="option_1">Optie 1</string>
@@ -13,7 +13,7 @@
     <string name="option_3">Optie 3</string>
     <string name="instellingen">Instellingen</string>
     <string name="text_instelling">TextView</string>
-    <string name="difficulty">Moeilijkheidsgraad:</string>
+    <string name="moeilijkheid">Moeilijkheidsgraad:</string>
     <string name="categorie">Categorie:</string>
     <string name="vul_nieuwe_vraag_in">Vul nieuwe vraag in</string>
     <string name="button_add">Toevoegen</string>

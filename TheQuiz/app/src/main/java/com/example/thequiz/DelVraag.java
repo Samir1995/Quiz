@@ -49,14 +49,14 @@ public class DelVraag extends AppCompatActivity {
     }
 
     private void removeItem(long id) {
-        DbHelper.db.delete(QuizContract.QuestionsTable.TABLE_NAME,
-                QuizContract.QuestionsTable._ID + "=" + id, null);
+        DbHelper.db.delete(QuizContract.VragenTabel.TABLE_NAME,
+                QuizContract.VragenTabel._ID + "=" + id, null);
         mAdapter.swapCursor(getAllItems());
     }
 
     private Cursor getAllItems() {
         return DbHelper.db.query(
-                QuizContract.QuestionsTable.TABLE_NAME,
+                QuizContract.VragenTabel.TABLE_NAME,
                 null,
                 null,
                 null,

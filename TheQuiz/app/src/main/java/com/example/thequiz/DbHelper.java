@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
-import android.view.View;
 
 import com.example.thequiz.QuizContract.*;
 
@@ -34,37 +33,37 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         this.db = db;
-
-        final String SQL_CREATE_CATEGORIES_TABLE = "CREATE TABLE " +
-                CategoriesTable.TABLE_NAME + "( " +
-                CategoriesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                CategoriesTable.COLUMN_NAME + " TEXT " +
+        // Create Tables for db
+        final String SQL_CREATE_CATEGORIE_TABEL = "CREATE TABLE " +
+                CategorieTabel.TABLE_NAME + "( " +
+                CategorieTabel._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                CategorieTabel.COLUMN_NAME + " TEXT " +
                 ")";
 
-        final String SQL_CREATE_QUESTIONS_TABLE = "CREATE TABLE " +
-                QuestionsTable.TABLE_NAME + " ( " +
-                QuestionsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                QuestionsTable.COLUMN_QUESTION + " TEXT, " +
-                QuestionsTable.COLUMN_OPTION1 + " TEXT, " +
-                QuestionsTable.COLUMN_OPTION2 + " TEXT, " +
-                QuestionsTable.COLUMN_OPTION3 + " TEXT, " +
-                QuestionsTable.COLUMN_ANSWER_NR + " INTEGER, " +
-                QuestionsTable.COLUMN_DIFFICULTY + " TEXT, " +
-                QuestionsTable.COLUMN_CATEGORY_ID + " INTEGER, " +
-                "FOREIGN KEY(" + QuestionsTable.COLUMN_CATEGORY_ID + ") REFERENCES " +
-                CategoriesTable.TABLE_NAME + "(" + CategoriesTable._ID + ")" + "ON DELETE CASCADE" +
+        final String SQL_CREATE_VRAGEN_TABEL = "CREATE TABLE " +
+                VragenTabel.TABLE_NAME + " ( " +
+                VragenTabel._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                VragenTabel.COLUMN_VRAAG + " TEXT, " +
+                VragenTabel.COLUMN_OPTIE1 + " TEXT, " +
+                VragenTabel.COLUMN_OPTIE2 + " TEXT, " +
+                VragenTabel.COLUMN_OPTIE3 + " TEXT, " +
+                VragenTabel.COLUMN_ANTW_NR + " INTEGER, " +
+                VragenTabel.COLUMN_MOEILIJKHEID + " TEXT, " +
+                VragenTabel.COLUMN_CATEGORIE_ID + " INTEGER, " +
+                "FOREIGN KEY(" + VragenTabel.COLUMN_CATEGORIE_ID + ") REFERENCES " +
+                CategorieTabel.TABLE_NAME + "(" + CategorieTabel._ID + ")" + "ON DELETE CASCADE" +
                 ")";
 
-        db.execSQL(SQL_CREATE_CATEGORIES_TABLE);
-        db.execSQL(SQL_CREATE_QUESTIONS_TABLE);
-        fillCategoriesTable();
-        fillQuestionsTable();
+        db.execSQL(SQL_CREATE_CATEGORIE_TABEL);
+        db.execSQL(SQL_CREATE_VRAGEN_TABEL);
+        vulCategorieTable();
+        VulVraagTable();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + CategoriesTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + QuestionsTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CategorieTabel.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + VragenTabel.TABLE_NAME);
         onCreate(db);
     }
     @Override
@@ -72,97 +71,81 @@ public class DbHelper extends SQLiteOpenHelper {
         super.onConfigure(db);
         db.setForeignKeyConstraintsEnabled(true);
     }
-    private void fillCategoriesTable() {
+    //fill Categorie table
+    private void vulCategorieTable() {
         Categorie c1 = new Categorie("Programmeren");
-        insertCategory(c1);
+        insertCategorie(c1);
         Categorie c2 = new Categorie("Aardrijkskunde");
-        insertCategory(c2);
+        insertCategorie(c2);
         Categorie c3 = new Categorie("Wiskunde");
-        insertCategory(c3);
+        insertCategorie(c3);
     }
-
-    public void addCategory(Categorie categorie) {
-        db = getWritableDatabase();
-        insertCategory(categorie);
-    }
-
-    public void addCategories(List<Categorie> categories) {
-        db = getWritableDatabase();
-
-        for (Categorie categorie : categories) {
-            insertCategory(categorie);
-        }
-    }
-
-    private void insertCategory(Categorie categorie) {
+    //insert categories in db
+    private void insertCategorie(Categorie categorie) {
         ContentValues cv = new ContentValues();
-        cv.put(CategoriesTable.COLUMN_NAME, categorie.getName());
-        db.insert(CategoriesTable.TABLE_NAME, null, cv);
+        cv.put(CategorieTabel.COLUMN_NAME, categorie.getName());
+        db.insert(CategorieTabel.TABLE_NAME, null, cv);
     }
 
-    private void fillQuestionsTable() {
+    //fill Vragen table
+    private void VulVraagTable() {
         Vragen q1 = new Vragen("Wat is Java?",
                 "Een Programeertaal ", "Eten", "Een land", 1,
-                Vragen.DIFFICULTY_EASY, Categorie.PROGRAMMING);
-        insertQuestion(q1);
+                Vragen.MOEILIJKHEID_MAK, Categorie.PROGRAMMING);
+        insertVraag(q1);
         Vragen q2 = new Vragen("Waar ligt Beverwijk?",
                 "Frankrijk", "Nederland", "Duitsland", 2,
-                Vragen.DIFFICULTY_MEDIUM, Categorie.GEOGRAPHY);
-        insertQuestion(q2);
+                Vragen.MOEILIJKHEID_GEM, Categorie.GEOGRAPHY);
+        insertVraag(q2);
         Vragen q3 = new Vragen("Wat is 2345 + 5896?",
                 "6780", "5678", "8241", 3,
-                Vragen.DIFFICULTY_HARD, Categorie.MATH);
-        insertQuestion(q3);
+                Vragen.MOEILIJKHEID_MOE, Categorie.MATH);
+        insertVraag(q3);
         Vragen q4 = new Vragen("Wat is 2 * 2?",
                 "4", "8", "2", 1,
-                Vragen.DIFFICULTY_EASY, Categorie.MATH);
-        insertQuestion(q4);
+                Vragen.MOEILIJKHEID_MAK, Categorie.MATH);
+        insertVraag(q4);
         Vragen q5 = new Vragen("Waar ligt Amsterdam?",
                 "Nederland", "USA", "Duitsland", 1,
-                Vragen.DIFFICULTY_EASY, Categorie.GEOGRAPHY);
-        insertQuestion(q5);
+                Vragen.MOEILIJKHEID_MAK, Categorie.GEOGRAPHY);
+        insertVraag(q5);
         Vragen q6 = new Vragen("Wat doet System.out.println?",
                 "Het doet niks", "Print parameter in tekstterminal", "Het verwijderd alles", 2,
-                Vragen.DIFFICULTY_MEDIUM, Categorie.PROGRAMMING);
-        insertQuestion(q6);
+                Vragen.MOEILIJKHEID_GEM, Categorie.PROGRAMMING);
+        insertVraag(q6);
     }
 
-    public void addQuestion(Vragen question) {
+    //Add new question
+    public void addVraag(Vragen vraag) {
         db = getWritableDatabase();
-        insertQuestion(question);
+        insertVraag(vraag);
     }
-
-    public void addQuestions(List<Vragen> questions) {
-        db = getWritableDatabase();
-
-        for (Vragen question : questions) {
-            insertQuestion(question);
-        }
-    }
-
-    private void insertQuestion(Vragen question) {
+    //insert new question in db
+    private void insertVraag(Vragen question) {
         ContentValues cv = new ContentValues();
-        cv.put(QuestionsTable.COLUMN_QUESTION, question.getQuestion());
-        cv.put(QuestionsTable.COLUMN_OPTION1, question.getOption1());
-        cv.put(QuestionsTable.COLUMN_OPTION2, question.getOption2());
-        cv.put(QuestionsTable.COLUMN_OPTION3, question.getOption3());
-        cv.put(QuestionsTable.COLUMN_ANSWER_NR, question.getAnswerNr());
-        cv.put(QuestionsTable.COLUMN_DIFFICULTY, question.getDifficulty());
-        cv.put(QuestionsTable.COLUMN_CATEGORY_ID, question.getCategoryID());
-        db.insert(QuestionsTable.TABLE_NAME, null, cv);
+        cv.put(VragenTabel.COLUMN_VRAAG, question.getVraag());
+        cv.put(VragenTabel.COLUMN_OPTIE1, question.getOptie1());
+        cv.put(VragenTabel.COLUMN_OPTIE2, question.getOptie2());
+        cv.put(VragenTabel.COLUMN_OPTIE3, question.getOptie3());
+        cv.put(VragenTabel.COLUMN_ANTW_NR, question.getAntwoordNr());
+        cv.put(VragenTabel.COLUMN_MOEILIJKHEID, question.getMoeilijkheid());
+        cv.put(VragenTabel.COLUMN_CATEGORIE_ID, question.getCategorieID());
+        db.insert(VragenTabel.TABLE_NAME, null, cv);
     }
 
+    //get all categories from db
     public List<Categorie> getAllCategories() {
         List<Categorie> categoryList = new ArrayList<>();
         db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + CategoriesTable.TABLE_NAME, null);
+        Cursor c = db.rawQuery("SELECT * FROM " + CategorieTabel.TABLE_NAME, null);
 
+        //get new vragenobject with it's values
         if (c.moveToFirst()) {
             do {
-                Categorie category = new Categorie();
-                category.setId(c.getInt(c.getColumnIndex(CategoriesTable._ID)));
-                category.setName(c.getString(c.getColumnIndex(CategoriesTable.COLUMN_NAME)));
-                categoryList.add(category);
+                Categorie categorie = new Categorie();
+                categorie.setId(c.getInt(c.getColumnIndex(CategorieTabel._ID)));
+                categorie.setName(c.getString(c.getColumnIndex(CategorieTabel.COLUMN_NAME)));
+                categoryList.add(categorie);
             } while (c.moveToNext());
         }
 
@@ -170,65 +153,67 @@ public class DbHelper extends SQLiteOpenHelper {
         return categoryList;
     }
 
-    public List<Vragen> getAllQuestions() {
-        List<Vragen> questionList = new ArrayList<>();
+    //get all categories from db
+    public List<Vragen> getAllVragen() {
+        List<Vragen> vragenList = new ArrayList<>();
         db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME, null);
+        Cursor c = db.rawQuery("SELECT * FROM " + VragenTabel.TABLE_NAME, null);
 
+        //get new vragenobject with it's values
         if (c.moveToFirst()) {
             do {
-                Vragen question = new Vragen();
-                question.setId(c.getInt(c.getColumnIndex(QuestionsTable._ID)));
-                question.setQuestion(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_QUESTION)));
-                question.setOption1(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION1)));
-                question.setOption2(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION2)));
-                question.setOption3(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION3)));
-                question.setAnswerNr(c.getInt(c.getColumnIndex(QuestionsTable.COLUMN_ANSWER_NR)));
-                question.setDifficulty(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_DIFFICULTY)));
-                question.setCategoryID(c.getInt(c.getColumnIndex(QuestionsTable.COLUMN_CATEGORY_ID)));
-                question.setCategoryID(c.getInt(c.getColumnIndex(QuestionsTable.COLUMN_CATEGORY_ID)));
-                questionList.add(question);
+                Vragen vraag = new Vragen();
+                vraag.setId(c.getInt(c.getColumnIndex(VragenTabel._ID)));
+                vraag.setVraag(c.getString(c.getColumnIndex(VragenTabel.COLUMN_VRAAG)));
+                vraag.setOptie1(c.getString(c.getColumnIndex(VragenTabel.COLUMN_OPTIE1)));
+                vraag.setOptie2(c.getString(c.getColumnIndex(VragenTabel.COLUMN_OPTIE2)));
+                vraag.setOptie3(c.getString(c.getColumnIndex(VragenTabel.COLUMN_OPTIE3)));
+                vraag.setAntwoordNr(c.getInt(c.getColumnIndex(VragenTabel.COLUMN_ANTW_NR)));
+                vraag.setMoeilijkheid(c.getString(c.getColumnIndex(VragenTabel.COLUMN_MOEILIJKHEID)));
+                vraag.setCategorieID(c.getInt(c.getColumnIndex(VragenTabel.COLUMN_CATEGORIE_ID)));
+                vraag.setCategorieID(c.getInt(c.getColumnIndex(VragenTabel.COLUMN_CATEGORIE_ID)));
+                vragenList.add(vraag);
             } while (c.moveToNext());
         }
 
         c.close();
-        return questionList;
+        return vragenList;
     }
 
-    public ArrayList<Vragen> getQuestions(int categoryID, String difficulty) {
-        ArrayList<Vragen> questionList = new ArrayList<>();
+    //get questions with right categories wn diff from db
+    public ArrayList<Vragen> getVraag(int categorieID, String moeilijkheid) {
+        ArrayList<Vragen> vraagList = new ArrayList<>();
         db = getReadableDatabase();
 
-        String selection = QuestionsTable.COLUMN_CATEGORY_ID + " = ? " +
-                " AND " + QuestionsTable.COLUMN_DIFFICULTY + " = ? ";
-        String[] selectionArgs = new String[]{String.valueOf(categoryID), difficulty};
+        String selectie = VragenTabel.COLUMN_CATEGORIE_ID + " = ? " +
+                " AND " + VragenTabel.COLUMN_MOEILIJKHEID + " = ? ";
+        String[] selectieArgs = new String[]{String.valueOf(categorieID), moeilijkheid};
 
         Cursor c = db.query(
-                QuestionsTable.TABLE_NAME,
+                VragenTabel.TABLE_NAME,
                 null,
-                selection,
-                selectionArgs,
+                selectie,
+                selectieArgs,
                 null,
                 null,
                 null
         );
 
-
         if (c.moveToFirst()) {
             do {
-                Vragen question = new Vragen();
-                question.setId(c.getInt(c.getColumnIndex(QuestionsTable._ID)));
-                question.setQuestion(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_QUESTION)));
-                question.setOption1(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION1)));
-                question.setOption2(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION2)));
-                question.setOption3(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION3)));
-                question.setAnswerNr(c.getInt(c.getColumnIndex(QuestionsTable.COLUMN_ANSWER_NR)));
-                question.setDifficulty(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_DIFFICULTY)));
-                questionList.add(question);
+                Vragen vraag = new Vragen();
+                vraag.setId(c.getInt(c.getColumnIndex(VragenTabel._ID)));
+                vraag.setVraag(c.getString(c.getColumnIndex(VragenTabel.COLUMN_VRAAG)));
+                vraag.setOptie1(c.getString(c.getColumnIndex(VragenTabel.COLUMN_OPTIE1)));
+                vraag.setOptie2(c.getString(c.getColumnIndex(VragenTabel.COLUMN_OPTIE2)));
+                vraag.setOptie3(c.getString(c.getColumnIndex(VragenTabel.COLUMN_OPTIE3)));
+                vraag.setAntwoordNr(c.getInt(c.getColumnIndex(VragenTabel.COLUMN_ANTW_NR)));
+                vraag.setMoeilijkheid(c.getString(c.getColumnIndex(VragenTabel.COLUMN_MOEILIJKHEID)));
+                vraagList.add(vraag);
             } while (c.moveToNext());
         }
 
         c.close();
-        return questionList;
+        return vraagList;
     }
 }

@@ -20,10 +20,9 @@ public class AddVraag extends AppCompatActivity {
     private TextView optie2;
     private TextView optie3;
     private TextView antwnr;
-    Context context = this;
 
-    private Spinner spinnerDifficulty;
-    private Spinner spinnerCategory;
+    private Spinner spinnerMoeilijkheid;
+    private Spinner spinnerCategorie;
 
     private Button addButton;
 
@@ -34,24 +33,30 @@ public class AddVraag extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        DbHelper.instance = new DbHelper(context);
+        DbHelper.instance = new DbHelper(this);
 
-        spinnerDifficulty = findViewById(R.id.spinner_difficulty);
-        spinnerCategory = findViewById(R.id.spinner_category);
+        spinnerMoeilijkheid = findViewById(R.id.spinner_moeilijkheid);
+        spinnerCategorie = findViewById(R.id.spinner_categorie);
         newVraag = findViewById(R.id.edittext_vraag);
         optie1 = findViewById(R.id.edittext_optie1);
         optie2 = findViewById(R.id.edittext_optie2);
         optie3 = findViewById(R.id.edittext_optie3);
         antwnr = findViewById(R.id.edittext_nr);
-        addButton = findViewById(R.id.button_del);
+        addButton = findViewById(R.id.button_add);
 
-        loadCategories();
-        loadDifficultyLevels();
+        laadCategorie();
+        laadMoeilijkheid();
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (newVraag.getText().toString().trim().length() == 0 | antwnr.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getBaseContext(),"Vul vraagveld in.",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (optie1.getText().toString().trim().length() == 0 | optie2.getText().toString().trim().length() == 0 |
+                        optie3.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getBaseContext(),"Vul alle optiesvelden in.",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -61,14 +66,18 @@ public class AddVraag extends AppCompatActivity {
                 String optie_3 = optie3.getText().toString();
                 String antw_nr = antwnr.getText().toString();
                 int value = Integer.parseInt(antw_nr);
-                String difficulty = spinnerDifficulty.getSelectedItem().toString();
-                Categorie selectedCategory = (Categorie) spinnerCategory.getSelectedItem();
-                int categoryID = selectedCategory.getId();
+                String moeilijkheid = spinnerMoeilijkheid.getSelectedItem().toString();
+                Categorie selectCategorie = (Categorie) spinnerCategorie.getSelectedItem();
+                int categorieID = selectCategorie.getId();
 
+                if(value < 1 | value > 3){
+                    Toast.makeText(getBaseContext(),"Vul een geldig optienummer in kies uit 1 2 of 3.",Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 Vragen q1 = new Vragen(new_vraag, optie_1, optie_2, optie_3, value,
-                        difficulty, categoryID);
-                DbHelper.instance.addQuestion(q1);
+                        moeilijkheid, categorieID);
+                DbHelper.instance.addVraag(q1);
 
                 ((EditText) findViewById(R.id.edittext_vraag)).getText().clear();
                 ((EditText) findViewById(R.id.edittext_optie1)).getText().clear();
@@ -93,22 +102,22 @@ public class AddVraag extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadCategories() {
+    private void laadCategorie() {
         DbHelper dbHelper = DbHelper.getInstance(this);
         List<Categorie> categories = dbHelper.getAllCategories();
 
-        ArrayAdapter<Categorie> adapterCategories = new ArrayAdapter<>(this,
+        ArrayAdapter<Categorie> adapterCategorie = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, categories);
-        adapterCategories.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapterCategories);
+        adapterCategorie.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategorie.setAdapter(adapterCategorie);
     }
 
-    private void loadDifficultyLevels() {
-        String[] difficultyLevels = Vragen.getAllDifficultyLevels();
+    private void laadMoeilijkheid() {
+        String[] moeilijkheidsgraad = Vragen.getAllMoeilijkheden();
 
-        ArrayAdapter<String> adapterDifficulty = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, difficultyLevels);
-        adapterDifficulty.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDifficulty.setAdapter(adapterDifficulty);
+        ArrayAdapter<String> adapterMoeilijkheid = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, moeilijkheidsgraad);
+        adapterMoeilijkheid.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMoeilijkheid.setAdapter(adapterMoeilijkheid);
     }
 }
